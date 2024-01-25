@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Audio Classifier</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 40px;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 600px;
+        }
+
+        #fileForm {
+            margin-bottom: 20px;
+        }
+
+        #predictButton {
+            width: 100%;
+        }
+
+        #predictionResult {
+            margin-top: 20px;
+            font-size: 1.2rem;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const audioInput = document.getElementById('audioFileInput');
+            const predictButton = document.getElementById('predictButton');
+            const predictResult = document.getElementById('predictionResult');
+            const correctAnswer = document.getElementById('correct-answer');
+            const fileNameInput = document.getElementById('fileName');
+
+            predictButton.disabled = true;
+            correctAnswer.style.display = 'none';
+
+            audioInput.addEventListener('change', function () {
+                if (this.files.length > 0) {
+                    const fileName = this.files[0].name;
+                    if (!fileName.endsWith('.wav')) {
+                        alert('Please upload a .wav file');
+                        predictButton.disabled = true;
+                        audioInput.value = '';
+                    } else {
+                        console.log("Selected file name: ", fileName);
+                        fileNameInput.value = fileName;
+                        predictButton.disabled = false;
+                    }
+                } else {
+                    predictButton.disabled = true;
+                }
+            });
+
+            if (predictResult.innerHTML !== "") {
+                correctAnswer.style.display = 'block';
+            }
+
+        });
+    </script>
+</head>
+
+<body>
+<div class="container mb-5">
+    <h1 class="text-center mb-4">Audio Classifier</h1>
+
+    <!-- Form for uploading files -->
+    <form id="fileForm" class="text-center" action='/' method="post" enctype="multipart/form-data">
+        <input id="audioFileInput" class="form-control mb-3" type="file" name="audio_file">
+        <button id="predictButton" class="btn btn-primary" type="submit">Predict Audio</button>
+    </form>
+
+    <!-- Place for prediction result -->
+    <p class="text-center bg-light p-3" id="predictionResult">{{ command }}</p>
+</div>
+<div class="container" id="correct-answer">
+    <h1 class="text-center mb-2">Answer</h1>
+    <p class="text-center mb-1">can you choose the correct answer</p>
+    <!-- Form for uploading correct label -->
+    <form id="labelForm" class="text-center" action='/improve' method="post">
+        <input type="hidden" id="fileName" name="file_name">
+        <!-- Dropdown for correct label -->
+        <select id="correctLabel" class="form-control mt-3" name="correct_label">
+            <option value="">Select the correct label</option>
+            <option value="AR">AR</option>
+            <option value="EN">EN</option>
+            <option value="FR">FR</option>
+        </select>
+        <button id="submitLabel" class="btn btn-primary mt-3" type="submit">Submit Answer</button>
+    </form>
+
+    <p class="text-center bg-light p-3" >{{ message }}</p>
+
+</div>
+
+</body>
+
+</html>
