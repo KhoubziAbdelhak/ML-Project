@@ -32,11 +32,7 @@ source venv/bin/activate
 ```sh
 pip install -r requirements.txt
 ```
-5. Create the Database file.
-```sh
-touch audio_classifier.sqlite
-```
-6. Run the app.py script.
+5. Run the app.py script.
 ```sh 
 python app.py
 ```

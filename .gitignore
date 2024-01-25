@@ -16,9 +16,6 @@ build/
 # Virtual environment
 venv/
 
-# Databases
-*.sqlite
-
 # IDEs
 .idea/
 *.iml
