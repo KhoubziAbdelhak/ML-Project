@@ -4,7 +4,6 @@ import numpy as np
 from flask import Flask, render_template, request, session
 import joblib
 import os
-import json
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
